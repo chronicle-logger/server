@@ -8,9 +8,12 @@
 		"test": "jest"
 	},
 	"dependencies": {
+		"@baileyherbert/container": "^2.0.3",
+		"dockerode": "^3.3.4",
 		"source-map-support": "^0.5.0"
 	},
 	"devDependencies": {
+		"@types/dockerode": "^3.3.14",
 		"@types/jest": "^28.1.6",
 		"@types/node": "^16.11.7",
 		"@typescript-eslint/eslint-plugin": "^5.46.0",
