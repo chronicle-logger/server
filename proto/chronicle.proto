@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package chronicle;
+
+service LogService {
+    rpc GetLogs(GetLogsRequest) returns (GetLogsResponse);
+    rpc StreamLogs(GetLogsRequest) returns (stream LogMessage);
+}
+
+message GetLogsRequest {
+    string containerId = 1;
+}
+
+message GetLogsResponse {
+    string contents = 1;
+}
+
+message LogMessage {}
