@@ -15,4 +15,6 @@ message GetLogsResponse {
     string contents = 1;
 }
 
-message LogMessage {}
+message LogMessage {
+    string contents = 1;
+}

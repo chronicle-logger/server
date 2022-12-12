@@ -13,6 +13,7 @@ export interface GetLogsResponse {
 }
 
 export interface LogMessage {
+  contents: string;
 }
 
 function createBaseGetLogsRequest(): GetLogsRequest {
@@ -110,11 +111,14 @@ export const GetLogsResponse = {
 };
 
 function createBaseLogMessage(): LogMessage {
-  return {};
+  return { contents: "" };
 }
 
 export const LogMessage = {
-  encode(_: LogMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: LogMessage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.contents !== "") {
+      writer.uint32(10).string(message.contents);
+    }
     return writer;
   },
 
@@ -125,6 +129,9 @@ export const LogMessage = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1:
+          message.contents = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -133,17 +140,19 @@ export const LogMessage = {
     return message;
   },
 
-  fromJSON(_: any): LogMessage {
-    return {};
+  fromJSON(object: any): LogMessage {
+    return { contents: isSet(object.contents) ? String(object.contents) : "" };
   },
 
-  toJSON(_: LogMessage): unknown {
+  toJSON(message: LogMessage): unknown {
     const obj: any = {};
+    message.contents !== undefined && (obj.contents = message.contents);
     return obj;
   },
 
-  fromPartial(_: DeepPartial<LogMessage>): LogMessage {
+  fromPartial(object: DeepPartial<LogMessage>): LogMessage {
     const message = createBaseLogMessage();
+    message.contents = object.contents ?? "";
     return message;
   },
 };
