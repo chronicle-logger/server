@@ -10,6 +10,8 @@
 	},
 	"dependencies": {
 		"@baileyherbert/container": "^2.0.3",
+		"@baileyherbert/env": "^2.1.0",
+		"@baileyherbert/logging": "^2.1.0",
 		"@grpc/grpc-js": "^1.8.0",
 		"dockerode": "^3.3.4",
 		"ix": "^5.0.0",
