@@ -1,4 +1,4 @@
-import { createChannel, createClient } from "nice-grpc";
+import { createChannel, createClient, Metadata } from "nice-grpc";
 import {
     LogServiceClient,
     LogServiceDefinition
@@ -11,7 +11,11 @@ async function main(): Promise<void> {
     // const response = await client.getLogs({ containerId: 'abc123' });
     // console.log(response.contents);
 
-    const response = client.streamLogs({ containerId: 'hello' });
+    const response = client.streamLogs({ containerId: 'hello' }, {
+        metadata: Metadata({
+            Authorization: "Bearer abc123"
+        })
+    });
     
     for await (const message of response) {
         console.log(`Received message:`, message.contents);

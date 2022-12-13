@@ -12,6 +12,11 @@ export const ApplicationEnvironmentManager: EnvironmentManager = new Environment
 export const Environment = ApplicationEnvironmentManager.rules({
     
     /**
+     * Whether or not debug mode should be enabled. Do not use this on production.
+     */
+    CHRONICLE_DEBUG: ApplicationEnvironmentManager.schema.boolean().optional(false),
+
+    /**
      * The network port through which the server should be exposed.
      */
     CHRONICLE_PORT: ApplicationEnvironmentManager.schema.number().optional(7878),
