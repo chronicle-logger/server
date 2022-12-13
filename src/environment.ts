@@ -14,6 +14,11 @@ export const Environment = ApplicationEnvironmentManager.rules({
     /**
      * The network port through which the server should be exposed.
      */
-    PORT: ApplicationEnvironmentManager.schema.number().optional(7878)
+    CHRONICLE_PORT: ApplicationEnvironmentManager.schema.number().optional(7878),
+
+    /**
+     * The private token that should be used to authenticate requests to the API.
+     */
+    CHRONICLE_KEY: ApplicationEnvironmentManager.schema.string()
 
 });

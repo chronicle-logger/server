@@ -5,8 +5,11 @@ import {
 } from "./proto/chronicle";
 
 async function main(): Promise<void> {
-    const channel = createChannel("127.0.0.1:3000");
+    const channel = createChannel("127.0.0.1:7878");
     const client: LogServiceClient = createClient(LogServiceDefinition, channel);
+    
+    // const response = await client.getLogs({ containerId: 'abc123' });
+    // console.log(response.contents);
 
     const response = client.streamLogs({ containerId: 'hello' });
     
