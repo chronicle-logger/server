@@ -17,7 +17,6 @@ import {
     LogServiceDefinition
 } from "./proto/chronicle";
 
-
 async function main(): Promise<void> {
     // Instantiate the application's logger
     const logger = new Logger();

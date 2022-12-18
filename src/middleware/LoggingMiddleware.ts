@@ -1,6 +1,5 @@
 import { Singleton } from "@baileyherbert/container";
 import { Logger } from "@baileyherbert/logging";
-import { isAbortError } from "abort-controller-x";
 import { CallContext, ServerError, ServerMiddlewareCall, Status } from "nice-grpc";
 
 /**

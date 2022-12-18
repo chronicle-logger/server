@@ -1,7 +1,7 @@
 import { Singleton } from "@baileyherbert/container";
 import { from } from "ix/asynciterable";
-import { map, withAbort } from "ix/asynciterable/operators";
-import { CallContext, Status } from "nice-grpc";
+import { map } from "ix/asynciterable/operators";
+import { CallContext } from "nice-grpc";
 import { DeepPartial, GetLogsRequest, GetLogsResponse, LogMessage, LogServiceImplementation } from "../../proto/chronicle";
 import { ContainerService } from "../containers/ContainerService";
 import { LogService } from "./LogService";
