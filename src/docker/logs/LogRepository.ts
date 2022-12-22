@@ -2,6 +2,11 @@ import { Singleton } from "@baileyherbert/container";
 import Docker from "dockerode";
 import { Readable } from "stream";
 
+interface IFrame {
+    readonly payload: string;
+    readonly next?: number;
+}
+
 /**
  * The application service responsible for communicating with the Docker Engine API to access `Container` log resources.
  */
@@ -13,6 +18,34 @@ export class LogRepository {
     public constructor() {
         this._client = new Docker();
     }
+
+    private readFrame(sourceBuffer: Buffer, start: number): IFrame {
+        console.log(`Reading frame from buffer:`, sourceBuffer);
+
+        const headerEnd = start + 8;
+
+        const headerBuffer = sourceBuffer.subarray(start, headerEnd);
+        console.log(`Header (Buffer):`, headerBuffer);
+        
+        const lengthBuffer = headerBuffer.subarray(4, 8);
+        console.log(`Length (Buffer):`, lengthBuffer);
+
+        const payloadLength = lengthBuffer.readInt32BE();
+        const payloadStart = start + 8;
+        const payloadEnd = payloadStart + payloadLength;
+        const payloadBuffer = sourceBuffer.subarray(payloadStart, payloadEnd);
+
+        console.log(`Payload Start:`, payloadStart);
+        console.log(`Payload Length:`, payloadLength);
+        console.log(`Payload End:`, payloadEnd);
+        
+        const payload = payloadBuffer.toString('utf-8');
+
+        return {
+            payload,
+            next: payloadEnd < sourceBuffer.length ? payloadEnd + 0 : undefined
+        }
+    } 
 
     /**
      * Returns a `string` consisting of the `Container` entity's log messages through the requested streams (among `stdout` and/or `stderr`)
@@ -35,10 +68,22 @@ export class LogRepository {
             tail: options?.tail
         });
 
-        // Read the buffer into a UTF-8 string
-        const logs = buffer.toString('utf-8');
+        const lines = [];
+        let next: number | undefined = 0;
 
-        return logs;
+        console.log(buffer.length);
+
+        while (next !== undefined) {
+            console.log(`Start:`, next);
+            const frame = this.readFrame(buffer, next);
+            lines.push(frame.payload);
+            console.log(`Frame:`, frame);
+            next = frame.next;
+        }
+
+        console.log(`Lines:`, lines);
+
+        return lines.join('');
     }
 
     /**
@@ -64,8 +109,6 @@ export class LogRepository {
 
         // Wrap the old-style `NodeJS.ReadableStream` instance with a more modern `Readable` instance
         const readableLogStream = new Readable().wrap(logStream);
-
-        
 
         // Return the log stream
         return readableLogStream;
